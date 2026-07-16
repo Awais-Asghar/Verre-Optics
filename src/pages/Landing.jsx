@@ -20,6 +20,15 @@ const STEPS = [
   { n: 3, Icon: IconGlasses, title: "Get matched frames", body: "Receive frame shapes, colors and sizing tuned to your face — plus a clean, printable report." },
 ];
 
+// Desktop curved-timeline geometry (percentages within the SVG viewBox / container)
+const CURVE_POS = [
+  { x: 38, y: 20, side: "left" },
+  { x: 62, y: 50, side: "right" },
+  { x: 38, y: 80, side: "left" },
+];
+const CURVE_PATH =
+  "M 50 6 C 44 12, 38 14, 38 20 C 38 32, 62 40, 62 50 C 62 60, 38 68, 38 80 C 38 86, 44 90, 50 94";
+
 const FEATURES = [
   { Icon: IconFace, title: "Face Shape", body: "Shape classification with probabilities, characteristics and full facial proportions." },
   { Icon: IconPalette, title: "Feature Analysis", body: "Eyes, brows, lips and nose — each measured and rated from real geometry." },
@@ -70,7 +79,7 @@ export default function Landing() {
           });
         });
 
-        // Timeline: draw the vertical connector line top→bottom on scroll
+        // Mobile timeline: draw the straight connector on scroll
         gsap.fromTo(
           "[data-timeline-fill]",
           { scaleY: 0 },
@@ -79,14 +88,24 @@ export default function Landing() {
             scrollTrigger: { trigger: "[data-timeline]", start: "top 60%", end: "bottom 75%", scrub: true },
           }
         );
+        // Desktop timeline: draw the curved SVG path progressively (scrub:1 = smooth, gradual)
+        gsap.utils.toArray("[data-curve-draw]").forEach((path) => {
+          const len = path.getTotalLength();
+          gsap.set(path, { strokeDasharray: len, strokeDashoffset: len });
+          gsap.to(path, {
+            strokeDashoffset: 0, ease: "none",
+            scrollTrigger: { trigger: "[data-curve]", start: "top 70%", end: "bottom 85%", scrub: 1 },
+          });
+        });
         gsap.utils.toArray("[data-step]").forEach((el) => {
-          gsap.from(el, { opacity: 0, x: -16, duration: 0.6, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 82%" } });
+          gsap.from(el, { opacity: 0, y: 20, duration: 0.6, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 85%" } });
         });
       });
 
       mm.add("(prefers-reduced-motion: reduce)", () => {
         gsap.set("[data-hero] > *, [data-hero-img], [data-reveal], [data-stagger] > *, [data-step]", { opacity: 1, y: 0, x: 0, scale: 1 });
         gsap.set("[data-timeline-fill]", { scaleY: 1, transformOrigin: "top" });
+        gsap.utils.toArray("[data-curve-draw]").forEach((p) => gsap.set(p, { strokeDashoffset: 0 }));
       });
     },
     { scope: root }
@@ -130,13 +149,12 @@ export default function Landing() {
             <h2 className="text-3xl font-bold tracking-tight text-fg sm:text-4xl">Three steps to your perfect fit</h2>
           </div>
 
-          <div data-timeline className="relative mx-auto max-w-2xl pl-0">
-            {/* connector track + animated fill */}
+          {/* MOBILE: straight vertical timeline */}
+          <div data-timeline className="relative mx-auto max-w-2xl md:hidden">
             <div className="absolute bottom-8 left-7 top-8 w-[2px] -translate-x-1/2 rounded bg-line" />
             <div data-timeline-fill className="absolute bottom-8 left-7 top-8 w-[2px] -translate-x-1/2 rounded bg-accent" style={{ transformOrigin: "top" }} />
-
             {STEPS.map((s) => (
-              <div data-step key={s.n} className="relative flex gap-6 pb-12 last:pb-0">
+              <div key={s.n} className="relative flex gap-5 pb-12 last:pb-0">
                 <div className="relative z-10 flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-full border-2 border-accent bg-surface2 text-accent shadow-soft">
                   <s.Icon size={22} />
                   <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-accent text-[11px] font-bold text-accent-fg">{s.n}</span>
@@ -147,6 +165,40 @@ export default function Landing() {
                 </div>
               </div>
             ))}
+          </div>
+
+          {/* DESKTOP: curved connector, drawn on scroll, nodes alternating left → right → left */}
+          <div data-curve className="relative mx-auto hidden h-[560px] max-w-5xl md:block">
+            <svg className="pointer-events-none absolute inset-0 h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none" fill="none" aria-hidden="true">
+              <path d={CURVE_PATH} stroke="rgb(var(--line))" strokeWidth="2" vectorEffect="non-scaling-stroke" />
+              <path data-curve-draw d={CURVE_PATH} stroke="rgb(var(--accent))" strokeWidth="2.5" strokeLinecap="round" vectorEffect="non-scaling-stroke" />
+            </svg>
+            {STEPS.map((s, i) => {
+              const p = CURVE_POS[i];
+              const left = p.side === "left";
+              return (
+                <div key={s.n}>
+                  {/* node */}
+                  <div
+                    data-step
+                    className="absolute z-10 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-accent bg-surface2 text-accent shadow-soft"
+                    style={{ left: `${p.x}%`, top: `${p.y}%` }}
+                  >
+                    <s.Icon size={24} />
+                    <span className="absolute -right-1.5 -top-1.5 flex h-6 w-6 items-center justify-center rounded-full bg-accent text-[12px] font-bold text-accent-fg">{s.n}</span>
+                  </div>
+                  {/* content */}
+                  <div
+                    className={`absolute w-[36%] -translate-y-1/2 ${left ? "pr-10 text-right" : "pl-10 text-left"}`}
+                    style={{ top: `${p.y}%`, [left ? "left" : "right"]: 0 }}
+                  >
+                    <div className="eyebrow mb-2">Step 0{s.n}</div>
+                    <h3 className="mb-1.5 font-serif text-2xl font-bold text-fg">{s.title}</h3>
+                    <p className="text-[15px] leading-relaxed text-muted">{s.body}</p>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -166,8 +218,8 @@ export default function Landing() {
           </div>
           <div data-stagger className="grid gap-6 md:grid-cols-3">
             {FEATURES.map((f) => (
-              <div key={f.title} className="card p-7 transition-shadow duration-300 hover:shadow-lift">
-                <span className="mb-5 flex h-12 w-12 items-center justify-center rounded-full bg-ink text-accent">
+              <div key={f.title} className="group card p-7 transition-all duration-300 hover:-translate-y-1.5 hover:border-accent/40 hover:shadow-lift">
+                <span className="mb-5 flex h-12 w-12 items-center justify-center rounded-full bg-ink text-accent transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6">
                   <f.Icon size={22} />
                 </span>
                 <h3 className="mb-2 font-serif text-xl font-bold text-fg">{f.title}</h3>
@@ -192,10 +244,10 @@ export default function Landing() {
 
           <div data-stagger className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {FACE_SHAPES.map((s) => (
-              <article key={s.key} className="card flex flex-col p-6">
+              <article key={s.key} className="group card flex flex-col p-6 transition-all duration-300 hover:-translate-y-1.5 hover:border-accent/40 hover:shadow-lift">
                 <div className="mb-4 flex items-center gap-4">
-                  <div className="h-16 w-14 flex-shrink-0 text-accent">{FACE_OUTLINES[s.key]}</div>
-                  <h3 className="font-serif text-2xl font-bold text-fg">{s.name}</h3>
+                  <div className="h-16 w-14 flex-shrink-0 text-accent transition-transform duration-300 group-hover:scale-110">{FACE_OUTLINES[s.key]}</div>
+                  <h3 className="font-serif text-2xl font-bold text-fg transition-colors duration-300 group-hover:text-accent">{s.name}</h3>
                 </div>
                 <p className="mb-4 text-[14px] leading-relaxed text-muted">{s.blurb}</p>
                 <ul className="mb-5 space-y-1.5">
@@ -256,8 +308,8 @@ export default function Landing() {
           </div>
           <div data-stagger className="grid gap-6 md:grid-cols-3">
             {QUOTES.map((t, i) => (
-              <figure key={i} className="card flex flex-col p-7">
-                <span className="mb-4 font-serif text-5xl leading-none text-accent">&ldquo;</span>
+              <figure key={i} className="group card flex flex-col p-7 transition-all duration-300 hover:-translate-y-1.5 hover:border-accent/40 hover:shadow-lift">
+                <span className="mb-4 font-serif text-5xl leading-none text-accent transition-transform duration-300 group-hover:scale-125">&ldquo;</span>
                 <blockquote className="flex-1 text-[15px] leading-relaxed text-fg">{t.q}</blockquote>
                 <figcaption className="mt-6 border-t border-line pt-4">
                   <div className="text-sm font-bold text-fg">{t.a}</div>
@@ -289,9 +341,18 @@ export default function Landing() {
       <footer className="border-t border-line py-14">
         <div className="mx-auto max-w-editorial px-6 text-center">
           {/* Real logo lockup, swapped by theme */}
-          <img src="/assets/logo-light.png" alt="Verre Optics" className="mx-auto mb-6 block h-20 w-auto dark:hidden" />
-          <img src="/assets/logo-dark.png" alt="Verre Optics" className="mx-auto mb-6 hidden h-20 w-auto dark:block" />
-          <p className="text-xs text-muted">Client-side analysis · Measurements are estimates, not medical or optical advice.</p>
+          <img src="/assets/logo-light.png" alt="Verre Optics" className="mx-auto mb-5 block h-20 w-auto dark:hidden" />
+          <img src="/assets/logo-dark.png" alt="Verre Optics" className="mx-auto mb-5 hidden h-20 w-auto dark:block" />
+          <p className="mx-auto max-w-sm text-[15px] leading-relaxed text-muted">
+            Eyewear, matched to you — find the frames made for your face.
+          </p>
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-x-7 gap-y-2 text-[13px] font-medium">
+            <a href="#how" className="text-muted transition-colors hover:text-accent">How it works</a>
+            <a href="#guide" className="text-muted transition-colors hover:text-accent">Face shapes</a>
+            <a href="#gallery" className="text-muted transition-colors hover:text-accent">Frames</a>
+            <Link to="/try" className="text-muted transition-colors hover:text-accent">Analyze my face</Link>
+          </div>
+          <p className="mt-7 text-xs text-muted">© 2026 Verre Optics · Private, in-browser eyewear styling.</p>
         </div>
       </footer>
     </div>

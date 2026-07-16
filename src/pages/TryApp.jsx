@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import Logo from "../components/Logo.jsx";
 import { Dots, Stat } from "../components/ui/AnalysisWidgets.jsx";
@@ -38,11 +38,32 @@ function AppBar({ left, right }) {
 }
 
 function BackLink({ onClick, to, children }) {
-  const cls = "flex items-center gap-1 text-sm font-semibold text-accent transition-colors hover:text-accent";
+  const cls = "flex items-center gap-1 text-sm font-semibold text-accent transition-colors hover:text-accent-strong";
   return to ? (
     <Link to={to} className={cls}><IconArrowLeft size={16} />{children}</Link>
   ) : (
     <button onClick={onClick} className={cls}><IconArrowLeft size={16} />{children}</button>
+  );
+}
+
+// App-header brand: the real VO icon + wordmark, links home.
+function AppLogo() {
+  return (
+    <Link to="/" className="flex items-center gap-2.5" aria-label="Verre Optics home">
+      <img src="/assets/logo-mark.png" alt="" className="h-8 w-8 rounded-lg" />
+      <span className="font-serif text-[17px] font-bold text-ink-fg">
+        <span className="text-accent">Verre</span> Optics
+      </span>
+    </Link>
+  );
+}
+
+// Compact icon-only mark for headers that already have a Back link.
+function AppMark() {
+  return (
+    <Link to="/" aria-label="Verre Optics home">
+      <img src="/assets/logo-mark.png" alt="" className="h-7 w-7 rounded-md" />
+    </Link>
   );
 }
 
@@ -56,7 +77,6 @@ export default function TryApp() {
   const [results, setResults] = useState(null);
   const [tab, setTab] = useState("shape");
   const [subScreen, setSubScreen] = useState("analysis");
-  const fileRef = useRef(null);
 
   const handleFile = useCallback((file) => {
     if (!file?.type.startsWith("image/")) { setError("Please upload a valid image."); return; }
@@ -99,18 +119,13 @@ export default function TryApp() {
     setScreen("method"); setImageUrl(null); setResults(null); setError(null); setSubScreen("analysis"); setProgress(0);
   };
 
-  const hiddenInput = (
-    <input ref={fileRef} type="file" accept="image/*" className="hidden"
-      onChange={(e) => e.target.files[0] && handleFile(e.target.files[0])} />
-  );
-
   // ── METHOD CHOOSER ──
   if (screen === "method") {
     const advUpload = ["Best quality control", "Use any front-facing photo", "JPG, PNG or WebP"];
     const advCamera = ["Take a photo right now", "On-screen framing guide", "Nothing is recorded"];
     return (
       <div className="min-h-screen bg-surface">
-        <AppBar left={<Link to="/"><Logo light /></Link>} right={<Link to="/" className="text-sm font-semibold text-accent hover:text-accent-strong">Home</Link>} />
+        <AppBar left={<AppLogo />} right={<Link to="/" className="text-sm font-semibold text-accent hover:text-accent-strong">Home</Link>} />
         <div className="mx-auto max-w-[880px] px-6">
           <div className="pt-12 text-center sm:pt-16">
             <p className="eyebrow mb-3">In-browser · Private</p>
@@ -121,17 +136,16 @@ export default function TryApp() {
           </div>
 
           <div className="grid gap-5 pb-10 md:grid-cols-2">
-            {/* Upload */}
-            <div
-              onClick={() => fileRef.current?.click()}
+            {/* Upload — a <label> so the click natively opens the file dialog (no JS, works everywhere) */}
+            <label
               onDrop={handleDrop}
               onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
               onDragLeave={() => setDragOver(false)}
-              className={`group flex cursor-pointer flex-col rounded-2xl border p-7 transition-all ${
-                dragOver ? "border-accent bg-accent/5" : "border-line bg-surface2 hover:shadow-lift"
+              className={`group flex cursor-pointer flex-col rounded-2xl border p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-lift ${
+                dragOver ? "border-accent bg-accent/5" : "border-line bg-surface2 hover:border-accent/40"
               }`}
             >
-              <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-accent-soft text-accent">
+              <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-accent-soft text-accent transition-transform duration-300 group-hover:scale-110">
                 <IconImage size={26} />
               </div>
               <h2 className="mb-1 font-serif text-xl font-bold text-fg">Upload Photo</h2>
@@ -143,14 +157,16 @@ export default function TryApp() {
                   </li>
                 ))}
               </ul>
-              <div className="btn-accent mt-auto w-full"><IconUpload size={16} /> Choose File</div>
+              <span className="btn-accent mt-auto w-full"><IconUpload size={16} /> Choose File</span>
               <p className="mt-2 text-center text-[11px] text-muted">or drag &amp; drop here</p>
-            </div>
+              <input type="file" accept="image/*" className="hidden"
+                onChange={(e) => e.target.files[0] && handleFile(e.target.files[0])} />
+            </label>
 
             {/* Camera */}
             <div
               onClick={() => { setError(null); setScreen("camera"); }}
-              className="group flex cursor-pointer flex-col rounded-2xl border border-line bg-surface2 p-7 transition-all hover:shadow-lift"
+              className="group flex cursor-pointer flex-col rounded-2xl border border-line bg-surface2 p-7 transition-all duration-300 hover:-translate-y-1 hover:border-accent/40 hover:shadow-lift"
             >
               <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-accent-soft text-accent">
                 <IconCamera size={26} />
@@ -168,8 +184,6 @@ export default function TryApp() {
               <p className="mt-2 text-center text-[11px] text-muted">Front or rear camera</p>
             </div>
           </div>
-          {/* Kept outside the card so its click doesn't re-trigger the card's onClick */}
-          {hiddenInput}
           {error && <p className="pb-8 text-center text-sm text-danger">{error}</p>}
         </div>
       </div>
@@ -180,7 +194,7 @@ export default function TryApp() {
   if (screen === "camera") {
     return (
       <div className="min-h-screen bg-surface">
-        <AppBar left={<Logo light size={17} />} />
+        <AppBar left={<AppLogo />} />
         <Webcam onCapture={(file) => handleFile(file)} onCancel={() => setScreen("method")} />
       </div>
     );
@@ -190,17 +204,20 @@ export default function TryApp() {
   if (screen === "preview") {
     return (
       <div className="min-h-screen bg-surface">
-        <AppBar left={<><BackLink onClick={reset}>Back</BackLink><Logo light size={17} /></>} />
+        <AppBar left={<><BackLink onClick={reset}>Back</BackLink><AppMark /></>} />
         <div className="mx-auto max-w-[600px] px-6 py-6">
           <div className="mb-5 overflow-hidden rounded-2xl border border-line bg-surface3">
             <img src={imageUrl} alt="Your uploaded photo" className="block h-auto w-full" />
           </div>
           {error && <p className="mb-3 text-center text-sm text-danger">{error}</p>}
           <div className="flex gap-3">
-            <button onClick={() => fileRef.current?.click()} className="btn-outline flex-1">Change Photo</button>
+            <label className="btn-outline flex-1 cursor-pointer">
+              Change Photo
+              <input type="file" accept="image/*" className="hidden"
+                onChange={(e) => e.target.files[0] && handleFile(e.target.files[0])} />
+            </label>
             <button onClick={runAnalysis} className="btn-accent flex-[2]"><IconSparkle size={16} /> Analyze My Face</button>
           </div>
-          {hiddenInput}
           <p className="mt-4 text-center text-xs text-muted">For best results, use a front-facing photo with even lighting.</p>
         </div>
       </div>
@@ -211,7 +228,7 @@ export default function TryApp() {
   if (screen === "analyzing") {
     return (
       <div className="min-h-screen bg-surface">
-        <AppBar left={<Logo light size={17} />} />
+        <AppBar left={<AppLogo />} />
         <div className="mx-auto max-w-[440px] px-6 py-10 text-center">
           <div className="relative mx-auto mb-8 aspect-[3/4] w-full max-w-[280px] overflow-hidden rounded-2xl border border-line">
             {imageUrl && <img src={imageUrl} alt="Analyzing" className="h-full w-full object-cover" />}
@@ -251,7 +268,7 @@ export default function TryApp() {
       return (
         <div className="min-h-screen bg-surface">
           <AppBar
-            left={<><BackLink onClick={() => setSubScreen("analysis")}>Analysis</BackLink><Logo light size={17} /></>}
+            left={<><BackLink onClick={() => setSubScreen("analysis")}>Analysis</BackLink><AppMark /></>}
             right={<button onClick={() => setSubScreen("report")} className="rounded-full bg-accent px-4 py-2 text-[13px] font-bold text-white hover:bg-accent-strong">View Report</button>}
           />
           <div className="mx-auto max-w-[700px] px-6 py-5">
@@ -393,7 +410,7 @@ export default function TryApp() {
     return (
       <div className="min-h-screen bg-surface">
         <AppBar
-          left={<><BackLink onClick={reset}>New</BackLink><Logo light size={17} /></>}
+          left={<><BackLink onClick={reset}>New</BackLink><AppMark /></>}
           right={<button onClick={() => setSubScreen("recommendations")} className="flex items-center gap-1.5 rounded-full bg-accent px-4 py-2 text-[13px] font-bold text-white hover:bg-accent-strong"><IconGlasses size={16} /> Recommendations</button>}
         />
         <div className="mx-auto max-w-[700px] px-6 pt-4">
