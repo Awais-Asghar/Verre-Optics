@@ -286,9 +286,11 @@ export default function Landing() {
       </section>
 
       {/* ── FOOTER ── */}
-      <footer className="border-t border-line py-10">
-        <div className="mx-auto flex max-w-editorial flex-col items-center justify-between gap-4 px-6 sm:flex-row">
-          <Logo size={17} />
+      <footer className="border-t border-line py-14">
+        <div className="mx-auto max-w-editorial px-6 text-center">
+          {/* Real logo lockup, swapped by theme */}
+          <img src="/assets/logo-light.png" alt="Verre Optics" className="mx-auto mb-6 block h-20 w-auto dark:hidden" />
+          <img src="/assets/logo-dark.png" alt="Verre Optics" className="mx-auto mb-6 hidden h-20 w-auto dark:block" />
           <p className="text-xs text-muted">Client-side analysis · Measurements are estimates, not medical or optical advice.</p>
         </div>
       </footer>
