@@ -368,7 +368,7 @@ export default function TryApp() {
               <p className="mb-2.5 text-[13px] text-muted">For your <strong>{R.face_shape}</strong> face: {shapeRec.desc}</p>
               <div className="flex flex-wrap gap-2">
                 {shapeRec.frames.map((f, i) => (
-                  <span key={i} className={`rounded-full px-4 py-2 text-[13px] font-semibold ${i === 0 ? "bg-ink text-fg-fg" : "bg-surface3 text-fg"}`}>
+                  <span key={i} className={`rounded-full px-4 py-2 text-[13px] font-semibold ${i === 0 ? "bg-ink text-ink-fg" : "bg-surface3 text-fg"}`}>
                     {f}{i === 0 ? " ★" : ""}
                   </span>
                 ))}

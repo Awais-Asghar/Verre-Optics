@@ -113,6 +113,18 @@
     50% { top: 94%; }
     100% { top: 4%; }
   }
+
+  /* Timeline node — lights up (fills with accent + glow) as the curve reaches it */
+  [data-step] {
+    transition: background-color 0.35s ease, color 0.35s ease, box-shadow 0.35s ease, transform 0.35s ease;
+  }
+  [data-step].node-lit {
+    background-color: rgb(var(--accent)) !important;
+    border-color: rgb(var(--accent)) !important;
+    color: rgb(var(--accent-fg)) !important;
+    box-shadow: 0 0 0 6px rgb(var(--accent) / 0.14), 0 10px 26px rgb(var(--accent) / 0.4);
+    transform: translate(-50%, -50%) scale(1.06);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

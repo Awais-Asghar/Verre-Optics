@@ -76,12 +76,15 @@ export default function Landing() {
           }
         );
 
-        // Desktop timeline: curved path fills on scroll down, empties on scroll up.
-        // Map scroll progress straight to the dash offset (robust vs. refresh/resize).
+        // Desktop timeline: curved path fills on scroll down, empties on scroll up,
+        // and each node lights up as the drawing line reaches it.
         gsap.utils.toArray("[data-curve-draw]").forEach((path) => {
+          const nodes = gsap.utils.toArray("[data-curve] [data-step]");
+          const nodeAt = [0.15, 0.5, 0.85]; // approx position of each node along the path
           const draw = (progress) => {
             const len = path.getTotalLength();
             gsap.set(path, { strokeDasharray: len, strokeDashoffset: len * (1 - progress) });
+            nodes.forEach((n, i) => n.classList.toggle("node-lit", progress >= nodeAt[i]));
           };
           draw(0);
           ScrollTrigger.create({
@@ -96,6 +99,7 @@ export default function Landing() {
         gsap.set("[data-hero] > *, [data-hero-img]", { opacity: 1, y: 0, scale: 1 });
         gsap.set("[data-timeline-fill]", { scaleY: 1, transformOrigin: "top" });
         gsap.utils.toArray("[data-curve-draw]").forEach((p) => gsap.set(p, { strokeDashoffset: 0 }));
+        gsap.utils.toArray("[data-curve] [data-step]").forEach((n) => n.classList.add("node-lit"));
       });
     },
     { scope: root }
@@ -106,7 +110,9 @@ export default function Landing() {
   useEffect(() => {
     const scope = root.current;
     if (!scope) return;
-    const singles = [...scope.querySelectorAll("[data-reveal], [data-step]")];
+    // Note: [data-step] timeline nodes are intentionally excluded — they keep their
+    // translate(-50%,-50%) centering and animate via the curve's node-lit effect.
+    const singles = [...scope.querySelectorAll("[data-reveal]")];
     const grids = [...scope.querySelectorAll("[data-stagger]")];
     const allChildren = [...singles, ...grids.flatMap((g) => [...g.children])];
 
