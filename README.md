@@ -14,7 +14,7 @@
   <img alt="Vite" src="https://img.shields.io/badge/Vite-5-646CFF?logo=vite&logoColor=white" />
   <img alt="Tailwind CSS" src="https://img.shields.io/badge/Tailwind-3-38BDF8?logo=tailwindcss&logoColor=white" />
   <img alt="GSAP" src="https://img.shields.io/badge/GSAP-3-88CE02?logo=greensock&logoColor=white" />
-  <img alt="License" src="https://img.shields.io/badge/license-see%20LICENSE-10917A" />
+  <img alt="License" src="https://img.shields.io/badge/license-Proprietary%20%C2%B7%20All%20Rights%20Reserved-B24A3A" />
 </p>
 
 ---
@@ -73,4 +73,7 @@ client-side routing, configure a **SPA fallback** so unknown routes serve `index
 ## Notes
 - Best results come from a clear, front-facing photo with even lighting. Angled or heavily
   side-lit photos reduce accuracy (symmetry and skin tone especially).
-- `framefit.jsx` in the repo root is the original single-file artifact, kept for reference.
+
+## License
+Proprietary — © 2026 Awais Asghar. All rights reserved. See [LICENSE](LICENSE). No use, copying,
+or distribution is permitted without express written permission.
