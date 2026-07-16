@@ -1,10 +1,9 @@
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import Nav from "../components/marketing/Nav.jsx";
-import Logo from "../components/Logo.jsx";
 import HeroCarousel from "../components/marketing/HeroCarousel.jsx";
 import { FACE_SHAPES, FACE_OUTLINES } from "../data/faceShapes.jsx";
 import {
@@ -53,6 +52,8 @@ const QUOTES = [
 export default function Landing() {
   const root = useRef(null);
 
+  // Scroll-position animations (hero intro + parallax + timeline draws). These are
+  // inherently position-based, so scrub/from is fine here.
   useGSAP(
     () => {
       const mm = gsap.matchMedia();
@@ -65,21 +66,7 @@ export default function Landing() {
           scrollTrigger: { trigger: "[data-hero]", start: "top top", end: "bottom top", scrub: true },
         });
 
-        // Reveal groups
-        gsap.utils.toArray("[data-reveal]").forEach((el) => {
-          gsap.from(el, { y: 28, opacity: 0, duration: 0.7, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 85%" } });
-        });
-
-        // Staggered grids
-        gsap.utils.toArray("[data-stagger]").forEach((grid) => {
-          gsap.from(grid.children, {
-            y: 22, opacity: 0, scale: 0.94, duration: 0.5, ease: "back.out(1.4)",
-            stagger: { each: 0.07, from: "start" },
-            scrollTrigger: { trigger: grid, start: "top 82%" },
-          });
-        });
-
-        // Mobile timeline: draw the straight connector on scroll
+        // Mobile timeline: straight connector fills on scroll
         gsap.fromTo(
           "[data-timeline-fill]",
           { scaleY: 0 },
@@ -88,28 +75,69 @@ export default function Landing() {
             scrollTrigger: { trigger: "[data-timeline]", start: "top 60%", end: "bottom 75%", scrub: true },
           }
         );
-        // Desktop timeline: draw the curved SVG path progressively (scrub:1 = smooth, gradual)
+
+        // Desktop timeline: curved path fills on scroll down, empties on scroll up.
+        // Map scroll progress straight to the dash offset (robust vs. refresh/resize).
         gsap.utils.toArray("[data-curve-draw]").forEach((path) => {
-          const len = path.getTotalLength();
-          gsap.set(path, { strokeDasharray: len, strokeDashoffset: len });
-          gsap.to(path, {
-            strokeDashoffset: 0, ease: "none",
-            scrollTrigger: { trigger: "[data-curve]", start: "top 70%", end: "bottom 85%", scrub: 1 },
+          const draw = (progress) => {
+            const len = path.getTotalLength();
+            gsap.set(path, { strokeDasharray: len, strokeDashoffset: len * (1 - progress) });
+          };
+          draw(0);
+          ScrollTrigger.create({
+            trigger: "[data-curve]", start: "top 72%", end: "bottom 68%", scrub: 1,
+            onUpdate: (self) => draw(self.progress),
+            onRefresh: (self) => draw(self.progress),
           });
-        });
-        gsap.utils.toArray("[data-step]").forEach((el) => {
-          gsap.from(el, { opacity: 0, y: 20, duration: 0.6, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 85%" } });
         });
       });
 
       mm.add("(prefers-reduced-motion: reduce)", () => {
-        gsap.set("[data-hero] > *, [data-hero-img], [data-reveal], [data-stagger] > *, [data-step]", { opacity: 1, y: 0, x: 0, scale: 1 });
+        gsap.set("[data-hero] > *, [data-hero-img]", { opacity: 1, y: 0, scale: 1 });
         gsap.set("[data-timeline-fill]", { scaleY: 1, transformOrigin: "top" });
         gsap.utils.toArray("[data-curve-draw]").forEach((p) => gsap.set(p, { strokeDashoffset: 0 }));
       });
     },
     { scope: root }
   );
+
+  // Reveal-on-scroll via IntersectionObserver — browser-native, so it can't be
+  // stranded by stale ScrollTrigger positions after images/fonts shift the layout.
+  useEffect(() => {
+    const scope = root.current;
+    if (!scope) return;
+    const singles = [...scope.querySelectorAll("[data-reveal], [data-step]")];
+    const grids = [...scope.querySelectorAll("[data-stagger]")];
+    const allChildren = [...singles, ...grids.flatMap((g) => [...g.children])];
+
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce || typeof IntersectionObserver === "undefined") {
+      gsap.set(allChildren, { opacity: 1, y: 0, scale: 1 });
+      return;
+    }
+
+    gsap.set(singles, { opacity: 0, y: 26 });
+    grids.forEach((g) => gsap.set(g.children, { opacity: 0, y: 22, scale: 0.94 }));
+
+    const reveal = (el) => {
+      if (el.dataset.stagger !== undefined) {
+        gsap.to(el.children, { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "back.out(1.4)", stagger: 0.07 });
+      } else {
+        gsap.to(el, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" });
+      }
+    };
+
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((e) => { if (e.isIntersecting) { reveal(e.target); io.unobserve(e.target); } }),
+      { rootMargin: "0px 0px -8% 0px", threshold: 0.04 }
+    );
+    [...singles, ...grids].forEach((el) => io.observe(el));
+
+    // Failsafe: guarantee nothing stays hidden if an observer callback is missed.
+    const failsafe = window.setTimeout(() => gsap.to(allChildren, { opacity: 1, y: 0, scale: 1, duration: 0.3 }), 3500);
+
+    return () => { io.disconnect(); window.clearTimeout(failsafe); };
+  }, []);
 
   return (
     <div ref={root} className="bg-surface">

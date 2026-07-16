@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Logo from "../Logo.jsx";
 import ThemeToggle from "../ThemeToggle.jsx";
 import { IconArrowRight } from "../Icons.jsx";
 
@@ -28,7 +27,12 @@ export default function Nav() {
       }`}
     >
       <nav className="mx-auto flex max-w-editorial items-center justify-between px-6 py-4">
-        <Link to="/" aria-label="Verre Optics home"><Logo size={19} /></Link>
+        <Link to="/" aria-label="Verre Optics home" className="flex items-center gap-2.5">
+          <img src="/assets/logo-mark.png" alt="" className="h-9 w-9 rounded-lg" />
+          <span className="font-serif text-[19px] font-bold text-fg">
+            <span className="text-accent">Verre</span> Optics
+          </span>
+        </Link>
         <div className="hidden items-center gap-8 lg:flex">
           {links.map((l) => (
             <a key={l.href} href={l.href} className="text-sm font-medium text-fg/80 transition-colors hover:text-accent">

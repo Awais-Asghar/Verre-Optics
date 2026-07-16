@@ -159,7 +159,7 @@ export default function TryApp() {
               </ul>
               <span className="btn-accent mt-auto w-full"><IconUpload size={16} /> Choose File</span>
               <p className="mt-2 text-center text-[11px] text-muted">or drag &amp; drop here</p>
-              <input type="file" accept="image/*" className="hidden"
+              <input type="file" accept="image/*" className="sr-only"
                 onChange={(e) => e.target.files[0] && handleFile(e.target.files[0])} />
             </label>
 
@@ -213,7 +213,7 @@ export default function TryApp() {
           <div className="flex gap-3">
             <label className="btn-outline flex-1 cursor-pointer">
               Change Photo
-              <input type="file" accept="image/*" className="hidden"
+              <input type="file" accept="image/*" className="sr-only"
                 onChange={(e) => e.target.files[0] && handleFile(e.target.files[0])} />
             </label>
             <button onClick={runAnalysis} className="btn-accent flex-[2]"><IconSparkle size={16} /> Analyze My Face</button>
