@@ -112,7 +112,7 @@ export async function analyzeFace(img, onProgress) {
   };
   const W = { lw: 1.3, fw: 2.6, jw: 2.3, ang: 0.9 }; // forehead/jaw ratios discriminate most
   const T = 0.045; // softmax temperature — smaller = more decisive
-  const dist = {};
+  const shapeDist = {};
   const exps = {};
   let zsum = 0;
   for (const [k, p] of Object.entries(PROTO)) {
@@ -121,14 +121,14 @@ export async function analyzeFace(img, onProgress) {
       W.fw * (feat.fw - p.fw) ** 2 +
       W.jw * (feat.jw - p.jw) ** 2 +
       W.ang * (feat.ang - p.ang) ** 2;
-    dist[k] = d;
+    shapeDist[k] = d;
     exps[k] = Math.exp(-d / T);
     zsum += exps[k];
   }
   const shape_probabilities = {};
   for (const k of Object.keys(PROTO)) shape_probabilities[k] = Math.round((exps[k] / zsum) * 100);
   fixTo100(shape_probabilities);
-  const face_shape = Object.entries(dist).sort((a, b) => a[1] - b[1])[0][0];
+  const face_shape = Object.entries(shapeDist).sort((a, b) => a[1] - b[1])[0][0];
 
   // ── Shape characteristics ──
   const shape_characteristics = {
