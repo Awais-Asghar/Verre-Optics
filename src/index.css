@@ -1,0 +1,130 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─────────────────────────────────────────────────────────────
+   FrameFit — Emerald & Ink theme tokens (RGB channels)
+   ───────────────────────────────────────────────────────────── */
+@layer base {
+  :root,
+  [data-theme="light"] {
+    --surface: 246 245 241; /* off-white page */
+    --surface-2: 255 255 255; /* cards */
+    --surface-3: 236 234 227; /* muted fills, bar tracks */
+    --fg: 20 24 26; /* primary text */
+    --muted: 92 97 94; /* secondary text */
+    --accent: 14 140 118; /* emerald */
+    --accent-strong: 11 110 93;
+    --accent-soft: 224 240 236; /* tint bg */
+    --accent-fg: 255 255 255; /* text on accent */
+    --line: 226 224 216;
+    --ink: 20 24 26; /* always-dark panels */
+    --ink-fg: 246 245 241;
+    --ink-muted: 150 156 152;
+    --ink-line: 42 48 48;
+    --shadow: 20 24 26;
+  }
+
+  [data-theme="dark"] {
+    --surface: 12 15 16; /* near-black page */
+    --surface-2: 22 27 28; /* cards */
+    --surface-3: 32 38 40; /* muted fills, bar tracks */
+    --fg: 234 235 232;
+    --muted: 154 160 160;
+    --accent: 41 190 162; /* brighter emerald for dark */
+    --accent-strong: 32 168 143;
+    --accent-soft: 18 40 36;
+    --accent-fg: 8 14 13;
+    --line: 40 46 47;
+    --ink: 6 9 10; /* darker than page so panels separate */
+    --ink-fg: 234 235 232;
+    --ink-muted: 150 156 156;
+    --ink-line: 34 40 41;
+    --shadow: 0 0 0;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-surface text-fg font-sans;
+    font-size: 16px;
+    line-height: 1.6;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-serif;
+    line-height: 1.1;
+  }
+
+  ::selection {
+    background: rgb(var(--accent));
+    color: rgb(var(--accent-fg));
+  }
+}
+
+@layer components {
+  .eyebrow {
+    @apply text-xs font-semibold uppercase text-accent;
+    letter-spacing: 0.18em;
+  }
+
+  .btn-accent {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-accent px-7 py-3.5
+           text-sm font-semibold tracking-wide text-accent-fg transition-all duration-300
+           hover:bg-accent-strong hover:shadow-accent focus:outline-none focus-visible:ring-2
+           focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-surface;
+  }
+
+  .btn-ink {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-ink px-7 py-3.5
+           text-sm font-semibold tracking-wide text-ink-fg transition-all duration-300
+           hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-fg
+           focus-visible:ring-offset-2 focus-visible:ring-offset-surface;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-fg/25
+           bg-transparent px-7 py-3.5 text-sm font-semibold tracking-wide text-fg
+           transition-all duration-300 hover:border-accent hover:text-accent
+           focus:outline-none focus-visible:ring-2 focus-visible:ring-accent;
+  }
+
+  .card {
+    @apply rounded-2xl border border-line bg-surface2 shadow-soft;
+  }
+
+  /* Analyzing scan line sweeping over the photo */
+  .scan-line {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgb(var(--accent)), transparent);
+    box-shadow: 0 0 14px 2px rgb(var(--accent) / 0.7);
+    animation: scanY 1.9s ease-in-out infinite;
+  }
+  @keyframes scanY {
+    0% { top: 4%; }
+    50% { top: 94%; }
+    100% { top: 4%; }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media print {
+  .no-print { display: none !important; }
+  body { background: #fff; }
+}
