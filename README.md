@@ -1,7 +1,7 @@
-# FrameFit
+# Verre Optics
 
 An editorial, in-browser eyewear recommender. Upload a photo — or use your camera — and
-FrameFit reads your face shape, features and skin tone, then recommends frame shapes, colors
+Verre Optics reads your face shape, features and skin tone, then recommends frame shapes, colors
 and sizes. Emerald & Ink design system with full light/dark mode.
 
 **Everything runs client-side.** Your photo never leaves the browser. No API keys, no account,

@@ -1,4 +1,4 @@
-// FrameFit — recommendation mapping logic.
+// Verre Optics — recommendation mapping logic.
 // Ported from the original framefit.jsx (SHAPE_MAP / TONE_MAP / getFrameSize).
 
 export const SHAPE_MAP = {

@@ -1,4 +1,4 @@
-// FrameFit — SVG frame-shape icons (ported from original framefit.jsx).
+// Verre Optics — SVG frame-shape icons (ported from original framefit.jsx).
 // Line-art frames rendered with currentColor so they inherit ink/gold.
 
 export const FRAME_ICONS = {

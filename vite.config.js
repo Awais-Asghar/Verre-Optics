@@ -1,7 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
-// FrameFit — Vite config. Base is relative so the built site works on any
+// Verre Optics — Vite config. Base is relative so the built site works on any
 // static host / subpath. face-api models & imagery live in /public.
 export default defineConfig({
   // Root-absolute base so /models and /assets resolve correctly on every route

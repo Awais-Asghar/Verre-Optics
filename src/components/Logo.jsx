@@ -1,4 +1,4 @@
-// FrameFit wordmark + glasses monogram. Theme-aware via currentColor.
+// Verre Optics wordmark + glasses monogram. Theme-aware via currentColor.
 export default function Logo({ light = false, size = 20 }) {
   return (
     <span
@@ -11,7 +11,7 @@ export default function Logo({ light = false, size = 20 }) {
         <path d="M18 14Q20 12 22 14" stroke="currentColor" strokeWidth="2" fill="none" />
       </svg>
       <span>
-        Frame<span className="text-accent">Fit</span>
+        <span className="text-accent">Verre</span> Optics
       </span>
     </span>
   );

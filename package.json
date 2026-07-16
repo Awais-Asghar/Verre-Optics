@@ -1,9 +1,9 @@
 {
-  "name": "framefit",
+  "name": "verre-optics",
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "FrameFit — AI-free, client-side eyewear recommender with editorial luxury design",
+  "description": "Verre Optics — AI-free, client-side eyewear recommender with editorial luxury design",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

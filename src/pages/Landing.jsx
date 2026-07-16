@@ -105,7 +105,7 @@ export default function Landing() {
               Find the frames<br />made for <span className="italic text-accent">your</span> face.
             </h1>
             <p className="mt-6 max-w-md text-[16px] leading-relaxed text-muted">
-              Upload one photo — or use your camera. FrameFit reads your face shape, features and skin
+              Upload one photo — or use your camera. Verre Optics reads your face shape, features and skin
               tone, then recommends the exact frame shapes, colors and sizes that suit you. All in your browser.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-4">
@@ -186,7 +186,7 @@ export default function Landing() {
             <h2 className="text-3xl font-bold tracking-tight text-fg sm:text-4xl">Know your face shape</h2>
             <p className="mt-4 text-[15px] leading-relaxed text-muted">
               Six shapes, one for everyone. Here's how to recognise each — and the frame styles that
-              flatter it. Not sure which is yours? FrameFit works it out from a single photo.
+              flatter it. Not sure which is yours? Verre Optics works it out from a single photo.
             </p>
           </div>
 
@@ -226,7 +226,7 @@ export default function Landing() {
             <p className="eyebrow mb-3">The frames</p>
             <h2 className="text-3xl font-bold tracking-tight text-ink-fg sm:text-4xl">Every shape, styled to suit</h2>
             <p className="mt-4 text-[15px] leading-relaxed text-ink-muted">
-              From structured browlines to soft rounds — FrameFit points you to the silhouettes that flatter your face.
+              From structured browlines to soft rounds — Verre Optics points you to the silhouettes that flatter your face.
             </p>
           </div>
           <div data-stagger className="grid grid-cols-2 gap-4 md:grid-cols-3">

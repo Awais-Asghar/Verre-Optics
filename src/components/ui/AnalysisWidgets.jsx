@@ -1,4 +1,4 @@
-// FrameFit — presentational analysis widgets (theme-aware tokens).
+// Verre Optics — presentational analysis widgets (theme-aware tokens).
 import { useState, useEffect } from "react";
 
 export function Dots() {

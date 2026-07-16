@@ -1,4 +1,4 @@
-// FrameFit — client-side face analysis engine.
+// Verre Optics — client-side face analysis engine.
 //
 // Replaces analyzeWithVision(). Uses @vladmandic/face-api (maintained face-api.js
 // fork) to detect a single face and 68 landmarks, then derives the SAME result

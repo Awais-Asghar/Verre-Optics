@@ -326,7 +326,7 @@ export default function TryApp() {
           />
           <div className="mx-auto max-w-[700px] px-6 py-8">
             <div className="mb-7 border-b-2 border-ink pb-5 text-center">
-              <div className="font-serif text-2xl font-extrabold text-fg">Frame<span className="text-accent">Fit</span> Report</div>
+              <div className="font-serif text-2xl font-extrabold text-fg"><span className="text-accent">Verre</span> Optics Report</div>
               <div className="text-[13px] text-muted">Personalized Eyewear Recommendation · {new Date().toLocaleDateString()}</div>
             </div>
 

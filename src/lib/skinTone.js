@@ -1,4 +1,4 @@
-// FrameFit — client-side skin-tone estimation.
+// Verre Optics — client-side skin-tone estimation.
 //
 // Replaces the Vision-API skin read. Method: sample skin patches (cheeks +
 // nose bridge) from the uploaded photo, reject shadow/glare/hair outliers,

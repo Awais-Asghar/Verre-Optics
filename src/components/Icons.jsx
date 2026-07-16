@@ -1,4 +1,4 @@
-// FrameFit — inline SVG icons (Lucide-style, stroke=currentColor).
+// Verre Optics — inline SVG icons (Lucide-style, stroke=currentColor).
 // Replaces emoji icons per the pre-delivery checklist (no emojis as icons).
 
 const base = {

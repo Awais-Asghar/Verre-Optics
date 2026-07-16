@@ -1,4 +1,4 @@
-// FrameFit — face-shape guide content + stylized outline icons.
+// Verre Optics — face-shape guide content + stylized outline icons.
 // Educational reference (inspired by common face-shape guides). Each entry has a
 // short description, key traits, and the frame styles that flatter it.
 

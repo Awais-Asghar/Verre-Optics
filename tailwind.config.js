@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-// FrameFit — Emerald & Ink theme.
+// Verre Optics — Emerald & Ink theme.
 // Colors are semantic tokens backed by CSS variables (RGB channels) so the same
 // class names adapt to light/dark via [data-theme] on <html>. Alpha modifiers
 // (bg-accent/10 etc.) work because vars are "R G B" channels.

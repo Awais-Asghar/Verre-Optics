@@ -1,4 +1,4 @@
-// FrameFit — the tabbed analysis view (Shape / Score / Eyes / Brows / Lips / Nose).
+// Verre Optics — the tabbed analysis view (Shape / Score / Eyes / Brows / Lips / Nose).
 // Structure ported from original framefit.jsx renderTabContent; restyled + SVG icons.
 import {
   RatingBar, ProbBar, PropBar, Stat, CharRow, ScoreRing, SectionTitle,

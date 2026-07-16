@@ -28,7 +28,7 @@ export default function Nav() {
       }`}
     >
       <nav className="mx-auto flex max-w-editorial items-center justify-between px-6 py-4">
-        <Link to="/" aria-label="FrameFit home"><Logo size={19} /></Link>
+        <Link to="/" aria-label="Verre Optics home"><Logo size={19} /></Link>
         <div className="hidden items-center gap-8 lg:flex">
           {links.map((l) => (
             <a key={l.href} href={l.href} className="text-sm font-medium text-fg/80 transition-colors hover:text-accent">
