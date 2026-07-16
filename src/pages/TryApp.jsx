@@ -145,7 +145,6 @@ export default function TryApp() {
               </ul>
               <div className="btn-accent mt-auto w-full"><IconUpload size={16} /> Choose File</div>
               <p className="mt-2 text-center text-[11px] text-muted">or drag &amp; drop here</p>
-              {hiddenInput}
             </div>
 
             {/* Camera */}
@@ -169,6 +168,8 @@ export default function TryApp() {
               <p className="mt-2 text-center text-[11px] text-muted">Front or rear camera</p>
             </div>
           </div>
+          {/* Kept outside the card so its click doesn't re-trigger the card's onClick */}
+          {hiddenInput}
           {error && <p className="pb-8 text-center text-sm text-danger">{error}</p>}
         </div>
       </div>
