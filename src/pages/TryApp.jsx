@@ -1,6 +1,5 @@
 import { useState, useCallback } from "react";
 import { Link } from "react-router-dom";
-import Logo from "../components/Logo.jsx";
 import { Dots, Stat } from "../components/ui/AnalysisWidgets.jsx";
 import ResultsTabs, { TABS } from "../components/app/ResultsTabs.jsx";
 import { SHAPE_MAP, TONE_MAP, getFrameSize, cap } from "../lib/recommend.js";
@@ -398,8 +397,11 @@ export default function TryApp() {
             </div>
 
             <div className="border-t border-line pt-5 text-center">
-              <Logo size={15} />
-              <div className="mt-1 text-[11px] text-muted">Client-side eyewear analysis · Measurements are estimates</div>
+              <div className="inline-flex items-center gap-2 font-serif text-[15px] font-bold text-fg">
+                <img src="/assets/logo-mark.png" alt="" className="h-6 w-6 rounded-md" />
+                <span><span className="text-accent">Verre</span> Optics</span>
+              </div>
+              <div className="mt-1.5 text-[11px] text-muted">© 2026 Verre Optics</div>
             </div>
           </div>
         </div>

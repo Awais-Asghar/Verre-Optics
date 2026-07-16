@@ -4,11 +4,13 @@ import { IconGlasses } from "../Icons.jsx";
 // Rotating hero of diverse faces with a manual swap control + dots.
 // Crossfades between images; auto-advances unless the user prefers reduced motion.
 const SLIDES = [
-  { src: "/assets/hero-3.jpg", alt: "Smiling person wearing round eyeglasses" },
-  { src: "/assets/hero-2.jpg", alt: "Person wearing white-framed eyeglasses" },
-  { src: "/assets/hero-1.jpg", alt: "Person wearing aviator eyeglasses" },
-  { src: "/assets/hero-4.jpg", alt: "Person wearing rectangular eyeglasses" },
-  { src: "/assets/hero-5.jpg", alt: "Person wearing round eyeglasses" },
+  { src: "/assets/hero-3.jpg", alt: "Smiling woman wearing round eyeglasses" },
+  { src: "/assets/hero-6.jpg", alt: "Man wearing round tortoise eyeglasses" },
+  { src: "/assets/hero-2.jpg", alt: "Woman wearing white-framed eyeglasses" },
+  { src: "/assets/hero-7.jpg", alt: "Man wearing clear-framed eyeglasses" },
+  { src: "/assets/hero-4.jpg", alt: "Woman wearing rectangular eyeglasses" },
+  { src: "/assets/hero-8.jpg", alt: "Man wearing clear round eyeglasses" },
+  { src: "/assets/hero-5.jpg", alt: "Woman wearing round eyeglasses" },
 ];
 
 export default function HeroCarousel() {
