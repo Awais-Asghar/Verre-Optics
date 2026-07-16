@@ -333,16 +333,16 @@ export default function TryApp() {
       );
     }
 
-    // ---- REPORT ---- (always light: it's a print document)
+    // ---- REPORT ---- (follows the theme on screen; forced light for print via @media print)
     if (subScreen === "report") {
       return (
-        <div data-theme="light" className="min-h-screen bg-white">
+        <div className="min-h-screen bg-surface">
           <AppBar
             left={<BackLink onClick={() => setSubScreen("recommendations")}>Back</BackLink>}
             right={<button onClick={() => window.print()} className="no-print flex items-center gap-1.5 rounded-full bg-accent px-4 py-2 text-[13px] font-bold text-white hover:bg-accent-strong"><IconPrint size={15} /> Print / Save PDF</button>}
           />
           <div className="mx-auto max-w-[700px] px-6 py-8">
-            <div className="mb-7 border-b-2 border-ink pb-5 text-center">
+            <div className="mb-7 border-b-2 border-fg pb-5 text-center">
               <div className="font-serif text-2xl font-extrabold text-fg"><span className="text-accent">Verre</span> Optics Report</div>
               <div className="text-[13px] text-muted">Personalized Eyewear Recommendation · {new Date().toLocaleDateString()}</div>
             </div>

@@ -138,5 +138,18 @@
 
 @media print {
   .no-print { display: none !important; }
+  /* Force clean light tokens for print, whatever theme is on screen */
+  :root {
+    --surface: 255 255 255;
+    --surface-2: 255 255 255;
+    --surface-3: 240 239 234;
+    --fg: 20 24 26;
+    --muted: 90 95 92;
+    --line: 226 224 216;
+    --accent: 14 140 118;
+    --accent-fg: 255 255 255;
+    --ink: 20 24 26;
+    --ink-fg: 246 245 241;
+  }
   body { background: #fff; }
 }
