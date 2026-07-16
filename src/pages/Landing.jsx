@@ -378,7 +378,7 @@ export default function Landing() {
           <img src="/assets/logo-light.png" alt="Verre Optics" className="mx-auto mb-5 block h-20 w-auto dark:hidden" />
           <img src="/assets/logo-dark.png" alt="Verre Optics" className="mx-auto mb-5 hidden h-20 w-auto dark:block" />
           <p className="mx-auto max-w-sm text-[15px] leading-relaxed text-muted">
-            Eyewear, matched to you — find the frames made for your face.
+            Find the frames made for your face.
           </p>
           <div className="mt-6 flex flex-wrap items-center justify-center gap-x-7 gap-y-2 text-[13px] font-medium">
             <a href="#how" className="text-muted transition-colors hover:text-accent">How it works</a>
@@ -386,7 +386,7 @@ export default function Landing() {
             <a href="#gallery" className="text-muted transition-colors hover:text-accent">Frames</a>
             <Link to="/try" className="text-muted transition-colors hover:text-accent">Analyze my face</Link>
           </div>
-          <p className="mt-7 text-xs text-muted">© 2026 Verre Optics · Private, in-browser eyewear styling.</p>
+          <p className="mt-7 text-xs text-muted">© 2026 Verre Optics</p>
         </div>
       </footer>
     </div>

@@ -1,4 +1,23 @@
-# Verre Optics
+<p align="center">
+  <img src="public/assets/og-image.png" alt="Verre Optics" width="440" />
+</p>
+
+<h1 align="center">Verre Optics</h1>
+
+<p align="center">
+  <em>Find the frames made for your face.</em><br/>
+  Private, in-browser eyewear styling — no account, no uploads, no API keys.
+</p>
+
+<p align="center">
+  <img alt="React" src="https://img.shields.io/badge/React-18-149ECA?logo=react&logoColor=white" />
+  <img alt="Vite" src="https://img.shields.io/badge/Vite-5-646CFF?logo=vite&logoColor=white" />
+  <img alt="Tailwind CSS" src="https://img.shields.io/badge/Tailwind-3-38BDF8?logo=tailwindcss&logoColor=white" />
+  <img alt="GSAP" src="https://img.shields.io/badge/GSAP-3-88CE02?logo=greensock&logoColor=white" />
+  <img alt="License" src="https://img.shields.io/badge/license-see%20LICENSE-10917A" />
+</p>
+
+---
 
 An editorial, in-browser eyewear recommender. Upload a photo — or use your camera — and
 Verre Optics reads your face shape, features and skin tone, then recommends frame shapes, colors
